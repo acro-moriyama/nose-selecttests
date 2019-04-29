@@ -62,6 +62,12 @@ pipeline {
                 archiveArtifacts 'coverage.xml'
             }
         }
-
+    }
+    post {
+        success {
+            jacoco execPattern: "**/**.exec"
+            recordIssues tool: checkStyle(pattern: "target/checkstyle-result.xml")
+            recordIssues tool: spotBugs(pattern: "target/spotbugsXml.xml")
+        }
     }
 }
